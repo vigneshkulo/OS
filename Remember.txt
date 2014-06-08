@@ -1,0 +1,10 @@
+* 'getsline' is unsafe to use, but reads a line till '/n' if one does not know the line length to read from the file.
+* 'fgets' is safe to use, but have to specify the line length to read.
+* "fortify_fail" -> Stack smash error occurs because you are copying (example) 5 bytes of data into only 3 bytes of allocated memory. 
+	It is basically a memory bound error. Check sscanf, strcpy, memcpy etc., to check if your copying more data into lesser memory.
+	sscanf("%4s") -> Will copy only 4 bytes of string into destination. Use this to solve such errors.
+	This error will occur when program exits. Will not occur at the line which is causing it, so gdb ,valgrind cannot catch this. 
+	Valgrind catches memory bound problems, only if memory belongs to heap, not statically allocated memory.
+* "Write" blocks when the pipe limit is reached, only if data is read at other end it will unblock and send more data. 
+* When sender dies, data in queue is retained, receiver can still read all data in queue even after sender's data.
+* pipe2(fd[], O_NONBLOCK); is used to make the read on this pipe non blocking.
